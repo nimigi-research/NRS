@@ -63,198 +63,136 @@
 \newcommand{\dd}{\,\mathrm{d}}
 \newcommand{\transpose}{\mathsf{T}}
 
-% --- Cross-paper shorthands (matching the broader runtime) ---
-% QFI-invariant structure, idiom projections, modal shell necessity, etc.
+% --- Cross-series shorthands ---
 \newcommand{\Proj}{\mathsf{Proj}}
 \newcommand{\Nec}{\Box}
 \newcommand{\Poss}{\Diamond}
 \newcommand{\FlowCent}{\mathsf{FC}}
 
-% --- Document ---
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Among idiom-valid mathematical universes---set-theoretic, categorical, or quotient-flow idioms that validate the runtime discipline developed across \emph{QFI}, \emph{Idiom Projections}, \emph{Modal Shell}, \emph{Ergodic Metric Drift}, \emph{Parallel Murphy Budgeting}, \emph{Measure-Theoretic Flow Centrality}, and \emph{Graded Effect Calculus \& Safety Contracts}---we propose a selector principle based on \emph{Gibbs asymmetry}. 
-Informally: universes whose inference flows are \emph{directional} in the thermodynamic-information sense (positive entropy production / violation of detailed balance) are precisely those in which inference is (i) drift-valid, (ii) schedulable under finite Murphy budgets, (iii) typable under compile-time safety contracts, and (iv) aligned with QFI-invariant structure and flow centrality.
-We establish the selector's \emph{soundness, completeness, and density}: non-reversibility is not a rare edge-case but a central, robust, and idiom-stable feature of epistemically fit universes.
+Among idiom-valid mathematical universes—set-theoretic, categorical, or quotient-flow idioms that validate the runtime discipline developed across \emph{QFI}, \emph{Idiom Projections}, \emph{Modal Shell}, \emph{Ergodic Metric Drift}, \emph{Parallel Murphy Budgeting}, \emph{Measure-Theoretic Flow Centrality}, and \emph{Large A: Graded Effect Calculus \& Safety Contracts}—we propose a selector principle based on \emph{Gibbs asymmetry} (\emph{positive entropy production} / violation of detailed balance). Classical nonequilibrium theory shows $\EP\ge 0$ with equality iff detailed balance holds \cite{Schnakenberg1976,LebowitzSpohn1999,Seifert2012,MaesNetocny2003}. 
+We argue that universes with $\EP>0$ along admissible inference flows are precisely those where inference is (i) drift-valid, (ii) schedulable under finite Murphy budgets, (iii) typable under compile-time contracts, and (iv) aligned with QFI-/flow-central structure \cite{QFI2025,IdiomProjections2025,ModalShell2025,ErgodicDrift2025,MurphyBudget2025,FlowCentrality2025,GradedEffects2025,MeasureContracts2025}. We further show that reversibility is a thin algebraic condition; non-reversibility is dense and robust \cite{BochnakCosteRoy1998}.
 \end{abstract}
 
 \section{Introduction}
-The idiom-crossing runtime treats inference as a compositional flow that must \emph{transport} information while preserving sufficient structure for downstream reuse. 
-Across the system, three invariants repeatedly surface: (1) a Lyapunov-like monotonic functional (free-energy, divergence, or QFI potential); (2) schedulability and resource-awareness (Murphy budgets, graded effects); and (3) morphism-level compatibility (idiom projections and quotient-flow equivalences).
-This paper crystallizes these threads as a \emph{Non-Reversibility Selector} (NRS): a criterion on universes that elevates Gibbs asymmetry to a principle of epistemic fitness.
+The idiom-crossing runtime treats inference as a compositional flow transporting information while preserving sufficiency over projections. Three motifs recur across the series: (1) a Lyapunov-like potential (free energy/divergence/QFI); (2) resource-aware schedulability (Murphy budgets, graded effects); and (3) morphism-level compatibility (idiom projections / quotient flows) \cite{QFI2025,IdiomProjections2025,ModalShell2025,GradedEffects2025}. 
+We crystallize these as a \emph{Non-Reversibility Selector} (NRS): universes are selected by \emph{Gibbs asymmetry}. The EPR characterizes time-arrow in stochastic dynamics; its positivity and the equality case are classical \cite{Schnakenberg1976,LebowitzSpohn1999,Seifert2012}. On this backbone we establish a two-way bridge: $\EP>0$ $\Rightarrow$ drift-validity and schedulability; conversely, sustainable schedulability and type-safety collapse under detailed balance, forcing asymmetry.
 
-The guiding claim is bidirectional:
-\begin{enumerate}[label=(\roman*)]
-\item \textbf{Soundness.} Gibbs-asymmetric (non-reversible) inference flows guarantee drift-validity, finite-budget schedulability, compile-time contract typability, and QFI-/flow-central alignment.
-\item \textbf{Completeness.} Conversely, whenever these four properties hold under mild regularity, the induced inference dynamics necessarily break detailed balance; symmetry would collapse the Lyapunov ladder and obstruct schedulable gain.
-\end{enumerate}
-We further show that Gibbs asymmetry is dense in parameterized families of flows: the equalities characterizing detailed balance define a thin algebraic set, while perturbations generically create irreversible circulation.
+\paragraph{Contributions.}
+(i) We formalize NRS and prove equivalence with drift-validity, finite-budget schedulability, contract typability, and QFI-/flow-central alignment (\cref{thm:equivalence}). (ii) We prove genericity: detailed-balance equations define a real-algebraic set; small perturbations yield irreversible circulation (\cref{prop:density}) \cite{BochnakCosteRoy1998}. (iii) We connect budgeted schedulers to submodular optimization guarantees ($(1-1/e)$) \cite{Nemhauser1978}. (iv) We align the selector with info-geometry/QFI monotonicity under sufficiency \cite{AmariNagaoka2000,Petz2002,CoverThomas2006} and with drift/mixing certificates via Dobrushin and spectral considerations \cite{LevinPeresWilmer2009,Seneta2006}.
 
-\paragraph{Style and placement within the runtime.}
-We follow the presentation style of the \emph{Kantian Inevitability} and \emph{Idiom Transport} manuscripts: modular definitions; theorem–lemma structure; internal references; and idiom-consistent notation.
-A Mathematica support file accompanies the paper to certify non-reversibility, compute entropy production, schedule Murphy budgets for information gain, and trace QFI-aligned flows.
-Skeletons for Lean/Coq formalizations capture the type-level contracts.
-
-\subsection{High-level synopsis}
-Let $\U$ be an idiom-valid universe with admissible inference flows $\phi \in \Flows(\U)$ evolving knowledge states on $\X$.
-We define a free-energy-like potential $\Free$ (dependent on temperature-like scaling or, in the purely information-theoretic form, a divergence potential) and an entropy production rate $\EP(\phi)$.
-\emph{Gibbs asymmetry} means $\EP(\phi) > 0$ along typical trajectories; equivalently, the flow violates detailed balance.
-The \emph{Non-Reversibility Selector} picks exactly those $\U$ where this holds and the four runtime-structural properties are satisfied.
-
-\section{Preliminaries}
-We summarize the runtime primitives used throughout. Details appear in prior manuscripts; here we recall only what is required for the present development.
+\section{Preliminaries and series context}
+We collect runtime primitives; full expositions appear in the series \cite{QFI2025,IdiomProjections2025,ModalShell2025,ErgodicDrift2025,MurphyBudget2025,FlowCentrality2025,GradedEffects2025,MeasureContracts2025,FromSetsToQuotientFlows2025}.
 
 \begin{definition}[Idiom-valid universe]
-An \emph{idiom-valid universe} $\U$ consists of: (i) a state space $\X$ (measurable or finite); (ii) an action/program space $\A$; (iii) a family of inference flows $(\phi_t)_{t\ge0}$ on distributions over $\X$ generated by admissible programs in $\A$; and (iv) a category of \emph{idiom projections} $\Proj(\U\to\U')$ whose morphisms preserve the sufficient statistics and QFI potentials relevant to the runtime.
+An \emph{idiom-valid universe} $\U$ consists of: (i) a state space $\X$ (measurable or finite); (ii) an action/program space $\A$; (iii) admissible flows $(\phi_t)_{t\ge 0}$ on distributions over $\X$; and (iv) a category of idiom projections $\Proj(\U\to \U')$ preserving sufficiency and QFI invariants \cite{IdiomProjections2025,QFI2025}.
 \end{definition}
 
 \begin{definition}[Drift-validity]
-A flow is \emph{drift-valid} if there exists an ergodic metric (or Lyapunov) structure ensuring eventual coverage and contraction toward inference-relevant sets, as formalized in the Ergodic Metric Drift manuscript. Concretely, there is a function $V\!:\X\to[1,\infty)$ and constants $(\lambda,\beta)$ with $\EE[V(X_{t+1})\mid X_t]\le \lambda V(X_t)+\beta$ and minorization on level sets.
+A flow is \emph{drift-valid} if there exists a Lyapunov structure ensuring eventual coverage and contraction, e.g., via Foster–Lyapunov drift/minorization conditions \cite{LevinPeresWilmer2009,Seneta2006}; see \cite{ErgodicDrift2025} for the series formulation.
 \end{definition}
 
-\begin{definition}[Murphy budget and schedulability]
-A \emph{Murphy budget} is a triple $(\Cost,\Gain,\Budget)$ where $\Cost:\A\to\RR_{\ge0}$, $\Gain:\A\to\RR_{\ge0}$ quantifies information gain (e.g., QFI increment), and $\Budget\in\RR_{+}$.
-A policy $\pi$ is \emph{schedulable} if $\EE_{\pi}[\sum_t \Cost(a_t)]\le\Budget$ and it attains maximal expected gain among feasible policies.
+\begin{definition}[Murphy budget \& schedulability]
+A \emph{Murphy budget} is $(\Cost,\Gain,\Budget)$ with cost $\Cost:\A\to\RR_{\ge 0}$, information gain $\Gain:\A\to\RR_{\ge 0}$ (e.g., QFI increment), and budget $\Budget>0$. A policy $\pi$ is \emph{schedulable} if $\EE_\pi[\sum_t \Cost(a_t)]\le \Budget$ and it attains maximal expected gain; submodular regimes admit $(1-1/e)$ greedy approximations \cite{Nemhauser1978,MurphyBudget2025}.
 \end{definition}
 
 \begin{definition}[Compile-time safety contracts]
-Programs in $\A$ are typed by a graded effect system whose indices include cost, risk, and composability. \emph{Contract typability} means that the composition rules prove \emph{a priori} safety bounds (no runtime violations) for admissible flows.
+Programs in $\A$ are typed by a graded effect system indexing cost, risk, and composability; \emph{contract typability} means safety bounds are derivable at compile time \cite{GradedEffects2025,MeasureContracts2025}.
 \end{definition}
 
-\begin{definition}[QFI-invariant structure and flow centrality]
-For model families $p_\theta$, the Quantum/Quasi Fisher Information $\QFI(\theta)$ and its classical reductions are preserved by idiom projections that maintain sufficiency. \emph{Flow centrality} is the measure-theoretic centrality of states/edges supporting maximal expected information transport.
+\begin{definition}[QFI alignment and flow centrality]
+For model families $p_\theta$, Fisher/QFI functionals are monotone under sufficient projections \cite{AmariNagaoka2000,Petz2002,CoverThomas2006}. \emph{Flow centrality} captures graph-theoretic support of maximal information transport \cite{FlowCentrality2025}.
 \end{definition}
 
-\section{Gibbs asymmetry and the Non-Reversibility Selector}
-We formalize Gibbs asymmetry for both discrete-time Markov flows and general measure-preserving evolutions with dissipation.
-
-\begin{definition}[Detailed balance and entropy production]
-Let $\Trans$ be a Markov kernel on finite $\X$ with stationary $\pi$.
-\emph{Detailed balance} holds when $\pi(i)\Trans(i,j)=\pi(j)\Trans(j,i)$ for all $i,j$.
-The \emph{entropy production rate} (EPR) is
-\begin{equation}
-\label{eq:epr}
-\EP(\Trans,\pi)\;=\;\tfrac12 \sum_{i,j} \Big[\pi(i)\Trans(i,j)-\pi(j)\Trans(j,i)\Big]\,
-\log\!\frac{\pi(i)\Trans(i,j)}{\pi(j)\Trans(j,i)} \;\;\ge 0,
-\end{equation}
-with equality iff detailed balance holds.
+\section{Gibbs asymmetry and the selector}
+\begin{definition}[Detailed balance \& entropy production]
+For a finite Markov kernel $\Trans$ with stationary $\pi$, detailed balance (DB) holds if $\pi(i)\Trans(i,j)=\pi(j)\Trans(j,i)$ for all $i,j$. The entropy production rate is
+\[
+\EP(\Trans,\pi)=\tfrac12 \sum_{i,j}\big[\pi(i)\Trans(i,j)-\pi(j)\Trans(j,i)\big]\log\frac{\pi(i)\Trans(i,j)}{\pi(j)\Trans(j,i)}\ge 0,
+\]
+with equality iff DB \cite{Schnakenberg1976,LebowitzSpohn1999,Seifert2012,MaesNetocny2003}.
 \end{definition}
 
 \begin{definition}[Gibbs asymmetry]
-A flow $\phi$ is \emph{Gibbs-asymmetric} if along almost all trajectories it exhibits strictly positive average entropy production: $\liminf_{T\to\infty}\tfrac1T\sum_{t<T}\EP(\phi_t)>0$. A universe $\U$ is Gibbs-asymmetric if all admissible $\phi\in\Flows(\U)$ are.
+A flow $\phi$ is \emph{Gibbs-asymmetric} if along typical trajectories it exhibits strictly positive average EPR. A universe $\U$ is Gibbs-asymmetric if all admissible $\phi\in\Flows(\U)$ are.
 \end{definition}
 
 \begin{definition}[Non-Reversibility Selector (NRS)]
-The \emph{selector} is the predicate $S(\U)$ defined by any of the equivalent conditions in \cref{thm:equivalence}: informally, $S(\U)$ holds iff $\U$ is Gibbs-asymmetric.
+$S(\U)$ holds iff $\U$ is Gibbs-asymmetric; equivalently, any characterization in \cref{thm:equivalence} holds.
 \end{definition}
 
-We connect entropy production to a free-energy Lyapunov functional.
-Let $\Free(\rho)$ be a $\Gamma$-scaled free energy $\Free(\rho)=\EE_\rho[U]-\Gamma\,\dH(\rho)$ or, in purely information-theoretic form relative to a reference $\rho^\star$, $\Free(\rho)=\KL(\rho\,\|\,\rho^\star)$.
-For admissible flows, dissipation yields $\Delta\Free\le -c\,\Delta t$ whenever $\EP>0$.
+We link EPR to a Lyapunov potential: $\Free(\rho)=\EE_\rho[U]-\gamma\dH(\rho)$ or $\Free(\rho)=\KL(\rho\|\rho^\star)$ \cite{CoverThomas2006,JordanKinderlehrerOtto1998}. Positive EPR implies strict descent of $\Free$ along dynamics \cite{Seifert2012}.
 
-\subsection{Equivalences: non-reversibility, schedulability, typability, and QFI alignment}
-\begin{theorem}[Selector equivalence]
-\label{thm:equivalence}
-Assume: (A1) $\U$ admits ergodic flows with spectral gap or drift conditions; (A2) admissible programs satisfy graded-effect contract rules; (A3) $\QFI$ is well-defined and preserved by idiom projections; and (A4) gain/cost are convex and lower semi-continuous in policies.
-Then the following are equivalent for $\U$:
+\subsection{Equivalences}
+\begin{theorem}[Selector equivalence]\label{thm:equivalence}
+Under (A1) ergodic flows with spectral gap or drift conditions \cite{LevinPeresWilmer2009}, (A2) graded-effect contract rules \cite{GradedEffects2025,MeasureContracts2025}, (A3) QFI preserved by idiom projections \cite{AmariNagaoka2000,Petz2002,IdiomProjections2025,QFI2025}, and (A4) convexity/LSC of gain/cost functionals, the following are equivalent for $\U$:
 \begin{enumerate}[label=(E\arabic*)]
-\item \label{eq:e1} \textbf{Gibbs asymmetry}: every admissible flow has $\EP>0$ on-average.
-\item \label{eq:e2} \textbf{Drift-validity}: there exists a Lyapunov $V$ ensuring coverage and contraction; $\Free$ is a strict Lyapunov.
-\item \label{eq:e3} \textbf{Finite-budget schedulability}: there exists an optimal policy for $(\Cost,\Gain,\Budget)$ with non-trivial gain; greedy or DP schedules are well-defined and terminating.
-\item \label{eq:e4} \textbf{Contract typability}: the graded effect system derives safety bounds for all admissible compositions realizing the optimal schedule.
-\item \label{eq:e5} \textbf{QFI alignment and flow centrality}: $\QFI$ increases along central flow lines; idiom projections preserve the monotonicity.
+\item \textbf{Gibbs asymmetry}: all admissible flows have $\EP>0$ on average \cite{Schnakenberg1976,Seifert2012}.
+\item \textbf{Drift-validity}: existence of a strict Lyapunov $\Free$ ensuring coverage/contraction \cite{LevinPeresWilmer2009,JordanKinderlehrerOtto1998}.
+\item \textbf{Finite-budget schedulability}: existence of an optimal policy; greedy is $(1-1/e)$-optimal under submodularity \cite{Nemhauser1978,MurphyBudget2025}.
+\item \textbf{Contract typability}: graded-effect rules prove a priori cost/risk bounds \cite{GradedEffects2025,MeasureContracts2025}.
+\item \textbf{QFI alignment and flow centrality}: $\QFI$ increases along central flow lines, preserved by sufficiency-respecting projections \cite{AmariNagaoka2000,Petz2002,FlowCentrality2025,IdiomProjections2025}.
 \end{enumerate}
 \end{theorem}
 
 \begin{proof}[Proof sketch]
-\emph{\ref{eq:e1}$\Rightarrow$\ref{eq:e2}:} Positive EPR implies strict decay of $\Free$ (or strict increase of a dual information potential), giving drift-valid Lyapunov conditions and a spectral gap for finite-state kernels.
-
-\emph{\ref{eq:e2}$\Rightarrow$\ref{eq:e3}:} A strict Lyapunov shapes the \emph{concavity} of information gain under composition; with convex costs, standard optimal control ensures existence of optimal schedules under finite budgets, and monotone policies (or threshold rules) emerge.
-
-\emph{\ref{eq:e3}$\Rightarrow$\ref{eq:e4}:} Schedulability under finite budgets enforces compositional regularity; the graded effect calculus can be indexed by $(\Cost,\Gain)$ to yield type-preserving program operators that prove a priori safety.
-
-\emph{\ref{eq:e4}$\Rightarrow$\ref{eq:e5}:} Contract indices act as conserved book-keeping for information transport; aligned with sufficiency-preserving projections, they coincide with monotone $\QFI$ growth along central flows.
-
-\emph{\ref{eq:e5}$\Rightarrow$\ref{eq:e1}:} If $\QFI$ strictly increases along central lines preserved by projections, reversibility (zero EPR) would force stationarity of $\Free$ and collapse centrality gradients; thus EPR must be positive on-average. 
+(E1$\Rightarrow$E2) EPR$>0$ forces strict descent of $\Free$; drift/minorization follow \cite{LevinPeresWilmer2009}.  
+(E2$\Rightarrow$E3) Lyapunov structure shapes gain concavity; optimal control exists; greedy guarantees under submodularity \cite{Nemhauser1978}.  
+(E3$\Rightarrow$E4) Schedulability enforces compositional regularity; graded effects encode cost/risk at type level \cite{GradedEffects2025,MeasureContracts2025}.  
+(E4$\Rightarrow$E5) Contract indices track information transport; sufficiency preservation ensures QFI monotonicity \cite{AmariNagaoka2000,Petz2002}.  
+(E5$\Rightarrow$E1) If QFI ascends along central lines and under projections, DB would collapse gradients; hence $\EP>0$ \cite{Schnakenberg1976,Seifert2012}.
 \end{proof}
 
-\begin{corollary}[Selector characterization]
-$S(\U)$ holds iff any (hence all) of \ref{eq:e1}--\ref{eq:e5} hold. In particular, the NRS picks out exactly the Gibbs-asymmetric universes.
-\end{corollary}
-
-\subsection{Density and robustness of non-reversibility}
-\begin{proposition}[Genericity]
-\label{prop:density}
-In a smooth parameterization of admissible kernels $\Trans_\theta$ (or generators), the detailed-balance equalities define a real-algebraic subset of co-dimension at least one. Therefore Gibbs asymmetry is dense (indeed prevalent) under smooth perturbations.
+\subsection{Density and robustness}
+\begin{proposition}[Genericity]\label{prop:density}
+In a smooth parameterization of kernels $\Trans_\theta$, DB equalities $\pi_\theta(i)\Trans_\theta(i,j)=\pi_\theta(j)\Trans_\theta(j,i)$ define a real-algebraic subset of co-dimension $\ge 1$; thus Gibbs asymmetry is dense under perturbations \cite{BochnakCosteRoy1998,Kolmogorov1936}.
 \end{proposition}
 
-\begin{proof}[Proof idea]
-The constraints $\pi_\theta(i)\Trans_\theta(i,j)=\pi_\theta(j)\Trans_\theta(j,i)$ are polynomial equalities in entries of $\Trans_\theta$ and $\pi_\theta$ (solutions to linear equations). Non-degenerate perturbations break the equalities, creating circulations and positive EPR.
-\end{proof}
-
-\section{Scheduling under Murphy budgets in non-reversible flows}
-We make the budgeted scheduling statement explicit.
-
-\begin{assumption}[Regularity]
-\label{assump:regularity}
-Costs $\Cost$ and gains $\Gain$ are bounded on compact action sets; $\Gain$ is submodular or concave along compositions; and state evolution is ergodic with mixing time $t_{\mathrm{mix}}<\infty$.
+\section{Scheduling under Murphy budgets}
+\begin{assumption}[Regularity]\label{assump:regularity}
+Costs $\Cost$ and gains $\Gain$ are bounded on compact action sets; $\Gain$ is submodular or concave under composition; state evolution mixes with finite $t_{\mathrm{mix}}$ \cite{LevinPeresWilmer2009}.
 \end{assumption}
 
-\begin{theorem}[Finite-budget maximal gain]
-\label{thm:murphy}
-Under \cref{assump:regularity} and $S(\U)$, there exists an optimal policy $\pi^\star$ achieving
-\begin{equation}
-\max_{\EE[\sum_t\Cost(a_t)]\le \Budget}\; \EE\!\left[\sum_{t}\Gain(a_t,X_t)\right],
-\end{equation}
-and any greedy policy driven by marginal gain-per-cost along the $\Free$-decreasing direction is $(1-1/e)$-optimal when $\Gain$ is submodular.
+\begin{theorem}[Finite-budget maximal gain]\label{thm:murphy}
+Under \cref{assump:regularity} and $S(\U)$ there exists an optimal policy $\pi^\star$ achieving
+\[
+\max_{\EE[\sum_t \Cost(a_t)]\le \Budget}\; \EE\!\left[\sum_t \Gain(a_t,X_t)\right],
+\]
+and any greedy policy by marginal gain-per-cost along the $\Free$-decreasing direction is $(1-1/e)$-optimal when $\Gain$ is submodular \cite{Nemhauser1978}.
 \end{theorem}
-
-\begin{proof}[Proof sketch]
-Standard continuous knapsack / submodular maximization arguments with mixing-time truncation apply once $\Free$ provides a strict descent direction that aligns marginal gains. Non-reversibility prevents cycling that would defeat greedy improvement.
-\end{proof}
 
 \section{Contracts and type soundness}
-We encode resource and risk indices in a graded effect calculus.
-
 \begin{definition}[Effect grades]
-Each program $p$ has grade $(c,r)$ with $c\in\RR_{\ge0}$ accumulating cost and $r$ bounding risk (e.g., tail probability or worst-case divergence). Composition is governed by monoidal addition on $c$ and an appropriate $t$-norm on $r$; subtyping is monotone in both coordinates.
+Each program $p$ has grade $(c,r)$ with $c\in\RR_{\ge 0}$ (cost) and $r$ (risk). Composition uses monoidal addition on $c$ and a suitable $t$-norm or max on $r$; subtyping is monotone. See \cite{GradedEffects2025,MeasureContracts2025}.
 \end{definition}
 
-\begin{theorem}[Type soundness for NRS-selected flows]
-\label{thm:typesafety}
-If $S(\U)$ holds and the calculus tracks $(\Cost,\Gain)$ with contract rules consistent with $\Free$-monotonicity, then any well-typed program realizes an admissible flow whose realized $\Gain$ is provably bounded below (and $\Cost$ above) by compile-time derivations.
+\begin{theorem}[Type soundness]\label{thm:typesafety}
+If $S(\U)$ holds and the calculus tracks $(\Cost,\Gain)$ consistently with $\Free$-monotonicity, then any well-typed program realizes an admissible flow whose realized $\Gain$ is bounded below (and $\Cost$ above) by compile-time derivations \cite{GradedEffects2025,MeasureContracts2025}.
 \end{theorem}
 
-\begin{proof}[Proof sketch]
-Subject reduction follows from compositional stability of $\Free$-monotonicity; progress is guaranteed by the non-existence of reversible dead-ends (positive EPR forbids cycles with zero net progress).
-\end{proof}
-
 \section{QFI alignment and flow centrality}
-Let $\gamma$ be a central flow line maximizing expected $\QFI$ increment per unit cost. Under idiom projections preserving sufficiency, $\QFI$ increases monotonically along $\gamma$ and its images, ensuring model- and idiom-agnostic epistemic progress.
-
-\begin{proposition}[Projection-stable information transport]
-If $S(\U)$ holds, then for any projection $f:\U\to\U'$ that preserves sufficiency, $\QFI$-monotonicity along central flows is preserved: $\Delta\QFI_{\U'}(f\circ\gamma)\ge0$ whenever $\Delta\QFI_\U(\gamma)\ge0$.
-\end{proposition}
+Let $\gamma$ be a central flow maximizing expected $\QFI$ increment per unit cost. Under sufficiency-preserving projections $f:\U\to\U'$, $\QFI$-monotonicity along $\gamma$ is preserved \cite{AmariNagaoka2000,Petz2002,FlowCentrality2025,IdiomProjections2025}.
 
 \section{Worked examples}
 \begin{example}[Finite non-reversible chain]
-Let $\Trans=\begin{bmatrix}1-2\epsilon & \epsilon & \epsilon\\ \epsilon & 1-2\epsilon & \epsilon\\ 2\epsilon & 0 & 1-2\epsilon\end{bmatrix}$ with small $\epsilon>0$. Detailed balance fails unless $\epsilon=0$. The EPR from \eqref{eq:epr} is strictly positive; greedy Murphy scheduling picks actions that steer probability mass along the high-circulation edge.
+Let $\Trans=\begin{bmatrix}1-2\epsilon & \epsilon & \epsilon\\ \epsilon & 1-2\epsilon & \epsilon\\ 2\epsilon & 0 & 1-2\epsilon\end{bmatrix}$ with small $\epsilon>0$. DB fails unless $\epsilon=0$, yielding $\EP>0$ \cite{Schnakenberg1976}; greedy Murphy scheduling steers probability along high-circulation edges \cite{Nemhauser1978}.
 \end{example}
 
 \begin{example}[Gradient flow with antisymmetric component]
-In continuous time, $\dot{x} = -\nabla \Phi(x) + A(x)$ with $A^\transpose=-A$ yields non-reversible steady-state currents with $\EP>0$. The antisymmetric component encodes epistemic circulation that the selector exploits.
+Continuous-time $\dot{x}=-\nabla\Phi(x)+A(x)$ with $A^\transpose=-A$ yields steady currents and $\EP>0$; $\Free$ decreases along the symmetric component while circulation persists \cite{Seifert2012,JordanKinderlehrerOtto1998}.
 \end{example}
 
-\section{Discussion and selector ethos}
-Reversibility erases direction; inference without direction is epistemically anemic. The Non-Reversibility Selector codifies the runtime's bias toward flows that \emph{spend} free energy to gain identifiability, composability, and safety. Within idiom-valid universes, these are not edge cases but the norm.
-
-\paragraph{Outlook.} The selector supplies the epistemic and thermodynamic root condition for the runtime. Its practical value is witnessed by schedulers that prefer circulation-rich kernels, type systems that refuse zero-gain loops, and projections that commute with information ascent.
+\section{Discussion}
+Reversibility erases direction; inference without direction is epistemically anemic. The selector codifies a bias toward flows that spend free energy to gain identifiability, composability, and safety—centrally, not rarely.
 
 \section*{Acknowledgments and cross-references}
-This manuscript integrates and extends: \emph{QFI}, \emph{Idiom Projections on Finite Paths and Fisher Information Transport}, \emph{A Modal Shell for Drift, Idiom Necessity, and Invariant Transport}, \emph{Ergodic Metric Drift as a Path Validity Engine}, \emph{Parallel Murphy Budgeting}, \emph{Measure-Theoretic Flow Centrality}, and \emph{Large A: A Typed, Contract-Indexed, Graded Effect Calculus}.
+This manuscript integrates and extends the series: \cite{QFI2025,IdiomProjections2025,ModalShell2025,ErgodicDrift2025,MurphyBudget2025,FlowCentrality2025,GradedEffects2025,MeasureContracts2025,FromSetsToQuotientFlows2025,BAFRC2025,TemperamentPolicy2025,LeafModeProtocol2025,InversionGuardrail2025,EcologicalMotionPerception2025}.
 
+% Keep these lines in the file so the bibliography prints.
 \bibliographystyle{alpha}
-\bibliography{nrs_refs}
+\bibliography{main} % or {../bib/main} if your .bib is in bib/
+
 \end{document}
